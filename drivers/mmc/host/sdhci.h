@@ -292,6 +292,7 @@ struct sdhci_ops {
 	unsigned int	(*spurious_crc_acmd51)(struct sdhci_host *host);
 	unsigned int	(*voltage_broken)(struct sdhci_host *host);
 	unsigned int	(*uhs_broken)(struct sdhci_host *host);
+	unsigned int	(*missing_status)(struct sdhci_host *host);
 };
 
 #ifdef CONFIG_MMC_SDHCI_IO_ACCESSORS
