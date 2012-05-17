@@ -617,7 +617,7 @@ static struct gpio_led bcm2708_leds[] = {
 	       .gpio = 16,
 	       .name = "led0",
 	       .default_trigger = "mmc0",
-	       .active_low = 0,
+	       .active_low = 1,
 	       },
 };
 
