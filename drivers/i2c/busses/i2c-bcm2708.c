@@ -372,7 +372,19 @@ static struct platform_driver bcm2708_i2c_driver = {
 	.probe		= bcm2708_i2c_probe,
 	.remove		= __devexit_p(bcm2708_i2c_remove),
 };
-module_platform_driver(bcm2708_i2c_driver);
+
+static int __init bcm2708_i2c_init(void)
+{
+	return platform_driver_register(&bcm2708_i2c_driver);
+}
+
+static void __exit bcm2708_i2c_exit(void)
+{
+	platform_driver_unregister(&bcm2708_i2c_driver);
+}
+
+module_init(bcm2708_i2c_init);
+module_exit(bcm2708_i2c_exit);
 
 MODULE_DESCRIPTION("BSC controller driver for Broadcom BCM2708");
 MODULE_AUTHOR("Chris Boot <bootc@bootc.net>");

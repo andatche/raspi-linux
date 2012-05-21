@@ -571,7 +571,19 @@ static struct platform_driver bcm2708_spi_driver = {
 	.probe		= bcm2708_spi_probe,
 	.remove		= __devexit_p(bcm2708_spi_remove),
 };
-module_platform_driver(bcm2708_spi_driver);
+
+static int __init bcm2708_spi_init(void)
+{
+	return platform_driver_register(&bcm2708_spi_driver);
+}
+
+static void __exit bcm2708_spi_exit(void)
+{
+	platform_driver_unregister(&bcm2708_spi_driver);
+}
+
+module_init(bcm2708_spi_init);
+module_exit(bcm2708_spi_exit);
 
 MODULE_DESCRIPTION("SPI controller driver for Broadcom BCM2708");
 MODULE_AUTHOR("Chris Boot <bootc@bootc.net>");
