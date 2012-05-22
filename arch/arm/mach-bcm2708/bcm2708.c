@@ -562,6 +562,24 @@ static struct platform_device bcm2708_bsc1_device = {
 	.resource = bcm2708_bsc1_resources,
 };
 
+#if defined(CONFIG_GPIO_MCP23S08) || defined(CONFIG_GPIO_MCP23S08_MODULE)
+#include <linux/spi/mcp23s08.h>
+
+static const struct mcp23s08_platform_data mcp23017_data = {
+	.chip[0] = {
+		.pullups = 0x00ff,
+	},
+	.base = 0x37,
+};
+
+
+static struct i2c_board_info __initdata pi_i2c_devs[] = {
+{ I2C_BOARD_INFO("mcp23008", 0x27),
+.platform_data = &mcp23017_data, },
+};
+#endif
+
+
 int __init bcm_register_device(struct platform_device *pdev)
 {
 	int ret;
@@ -607,6 +625,8 @@ void __init bcm2708_init(void)
 	bcm_register_device(&bcm2708_spi_device);
 	bcm_register_device(&bcm2708_bsc0_device);
 	bcm_register_device(&bcm2708_bsc1_device);
+
+	i2c_register_board_info(0, pi_i2c_devs,ARRAY_SIZE(pi_i2c_devs));
 
 #ifdef CONFIG_BCM2708_VCMEM
 	{
