@@ -565,19 +565,32 @@ static struct platform_device bcm2708_bsc1_device = {
 #if defined(CONFIG_GPIO_MCP23S08) || defined(CONFIG_GPIO_MCP23S08_MODULE)
 #include <linux/spi/mcp23s08.h>
 
-static const struct mcp23s08_platform_data mcp23017_data = {
+static const struct mcp23s08_platform_data mcp23017_0_data = {
 	.chip[0] = {
 		.pullups = 0x00ff,
 	},
 	.base = 0x37,
 };
 
-
-static struct i2c_board_info __initdata pi_i2c_devs[] = {
-{ I2C_BOARD_INFO("mcp23008", 0x27),
-.platform_data = &mcp23017_data, },
+static const struct mcp23s08_platform_data mcp23017_1_data = {
+	.chip[0] = {
+		.pullups = 0x00ff,
+	},
+	.base = 0x3f,
 };
 #endif
+
+static struct i2c_board_info __initdata pi_i2c_devs[] = {
+#if defined(CONFIG_GPIO_MCP23S08) || defined(CONFIG_GPIO_MCP23S08_MODULE)
+{ I2C_BOARD_INFO("mcp23008", 0x20),
+.platform_data = &mcp23017_0_data, },
+{ I2C_BOARD_INFO("mcp23008", 0x21),
+.platform_data = &mcp23017_1_data, },
+#endif
+#if defined(CONFIG_RTC_DRV_DS1307) || defined(CONFIG_RTC_DRV_DS1307_MODULE)
+{ I2C_BOARD_INFO("ds1307", 0x68), },
+#endif
+};
 
 
 int __init bcm_register_device(struct platform_device *pdev)
